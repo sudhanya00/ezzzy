@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { ArrowRight, Sparkles } from "lucide-react";
@@ -57,6 +57,9 @@ export default function Home() {
     router.push("/criteria");
   };
 
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
   const isValid = localOptions.filter((opt) => opt.trim() !== "").length >= 2;
 
   return (
@@ -75,7 +78,7 @@ export default function Home() {
           <p className="text-zinc-600 font-medium tracking-wide text-sm">Configure your parameters or select a template</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6 panel-metal p-8 rounded-xl relative">
+        <form onSubmit={handleSubmit} className="space-y-6 panel-metal p-8 rounded-xl relative" suppressHydrationWarning>
            {/* Decorative corner screws for the form panel */}
           <div className="absolute top-2 left-2 w-2 h-2 rounded-full bg-zinc-400 shadow-[inset_0_1px_1px_rgba(0,0,0,0.5),0_1px_0_rgba(255,255,255,0.8)] border border-zinc-500"></div>
           <div className="absolute top-2 right-2 w-2 h-2 rounded-full bg-zinc-400 shadow-[inset_0_1px_1px_rgba(0,0,0,0.5),0_1px_0_rgba(255,255,255,0.8)] border border-zinc-500"></div>
@@ -120,7 +123,7 @@ export default function Home() {
             
             <Button 
               type="submit" 
-              disabled={!isValid}
+              disabled={!mounted || !isValid}
               className="gap-2"
               variant="primary"
             >
